@@ -50,7 +50,7 @@ module.exports = {
         },
       },
     ],
-    "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/indent": "off",
     "@typescript-eslint/member-delimiter-style": [
       "warn",
       {

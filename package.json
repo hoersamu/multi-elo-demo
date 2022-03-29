@@ -22,7 +22,8 @@
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "lint": "eslint src --ext .tsx"
   },
   "dependencies": {
     "@fluentui/react-icons": "2.0.153-canary.0",

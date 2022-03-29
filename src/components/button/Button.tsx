@@ -1,14 +1,18 @@
 import classNames from "classnames";
 import { ButtonHTMLAttributes, FC } from "react";
 
-export const Button: FC<ButtonHTMLAttributes<HTMLButtonElement>> = ({
-  children,
-  className,
-  ...props
-}) => (
+type ButtonProps = {
+  primary?: boolean;
+};
+
+export const Button: FC<
+  ButtonHTMLAttributes<HTMLButtonElement> & ButtonProps
+> = ({ primary, children, className, ...props }) => (
   <button
     className={classNames("flex p-2 rounded-lg", className, {
-      "hover:shadow-elevation-2 hover:bg-btn-hover": !props.disabled,
+      "hover:shadow-elevation-2": !props.disabled,
+      "hover:bg-btn-hover": !props.disabled && !primary,
+      "bg-accent": primary,
     })}
     {...props}
   >

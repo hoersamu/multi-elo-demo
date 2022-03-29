@@ -1,12 +1,6 @@
 import { Delete24Regular } from "@fluentui/react-icons";
 import classNames from "classnames";
-import {
-  ChangeEvent,
-  Component,
-  ComponentProps,
-  FC,
-  InputHTMLAttributes,
-} from "react";
+import { ChangeEvent, FC, InputHTMLAttributes } from "react";
 import { Team } from "../../App";
 import { Button } from "../button/Button";
 import { TableDataCell } from "../tableDataCell/TableDataCell";
@@ -17,8 +11,6 @@ type InputTableProps = {
 };
 
 export const InputTable: FC<InputTableProps> = ({ teams, setTeams }) => {
-  const foo = "bar";
-
   const onUpdate = (
     event: ChangeEvent<HTMLInputElement>,
     key: keyof Team,
@@ -38,7 +30,7 @@ export const InputTable: FC<InputTableProps> = ({ teams, setTeams }) => {
   };
 
   return (
-    <>
+    <div className="overflow-y-hidden overflow-x-auto max-w-[100vw] pb-2">
       <table>
         <thead>
           <tr>
@@ -90,7 +82,7 @@ export const InputTable: FC<InputTableProps> = ({ teams, setTeams }) => {
           ))}
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
 

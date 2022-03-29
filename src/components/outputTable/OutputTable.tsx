@@ -2,6 +2,8 @@ import { FC } from "react";
 import { OutputTeam } from "../../App";
 import { TableDataCell } from "../tableDataCell/TableDataCell";
 
+const precision = 2;
+
 type OutputTableProps = {
   teams: OutputTeam[];
 };
@@ -23,10 +25,10 @@ export const OutputTable: FC<OutputTableProps> = ({ teams }) => (
           <tr key={index}>
             <td>{team.name}</td>
             <td title={team.newRating.toString()}>
-              {team.newRating.toFixed(2)}
+              {team.newRating.toFixed(precision)}
             </td>
             <td title={(team.newRating - team.rating).toString()}>
-              {(team.newRating - team.rating).toFixed(2)}
+              {(team.newRating - team.rating).toFixed(precision)}
             </td>
           </tr>
         ))}

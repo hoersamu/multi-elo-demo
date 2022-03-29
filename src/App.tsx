@@ -30,7 +30,7 @@ export const App: FC = () => {
   const addTeam = (): void => {
     setTeams([
       ...teams,
-      { name: "", rating: "", order: teams.length.toString() },
+      { name: "", rating: "", order: (teams.length + 1).toString() },
     ]);
   };
 

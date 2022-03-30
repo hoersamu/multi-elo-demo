@@ -1,7 +1,15 @@
 import { AddCircle24Regular, Calculator24Regular } from "@fluentui/react-icons";
-import { MultiElo } from "multi-elo";
+import {
+  DEFAULT_K_VALUE,
+  DEFAULT_D_VALUE,
+  DEFAULT_S_VALUE,
+  MultiElo,
+  MultiEloConfig,
+} from "multi-elo";
 import React, { FC, useRef, useState } from "react";
+import { useEffectOnce } from "usehooks-ts";
 import { Button } from "./components/button/Button";
+import { ExtendedSettings } from "./components/extendedSettings/ExtendedSettings";
 import { InputTable } from "./components/inputTable/InputTable";
 import { OutputTable } from "./components/outputTable/OutputTable";
 
@@ -17,26 +25,17 @@ export type OutputTeam = {
   newRating: number;
 };
 
-const startRating = 1000;
-const startDifference = 16;
-
 export const App: FC = () => {
   const [teams, setTeams] = useState<Team[]>([
     { name: "Team A", rating: "1000", order: "1" },
     { name: "Team B", rating: "1000", order: "2" },
   ]);
-  const [outputTeams, setOutputTeams] = useState<OutputTeam[]>([
-    {
-      name: "Team A",
-      rating: startRating,
-      newRating: startRating + startDifference,
-    },
-    {
-      name: "Team B",
-      rating: startRating,
-      newRating: startRating - startDifference,
-    },
-  ]);
+  const [outputTeams, setOutputTeams] = useState<OutputTeam[]>([]);
+  const [eloConfig, setEloConfig] = useState<MultiEloConfig>({
+    k: DEFAULT_K_VALUE,
+    d: DEFAULT_D_VALUE,
+    s: DEFAULT_S_VALUE,
+  });
 
   const lastRowNameRef = useRef<HTMLInputElement>(null);
 
@@ -52,7 +51,7 @@ export const App: FC = () => {
   };
 
   const calculate = (): void => {
-    const newScores = new MultiElo().getNewRatings(
+    const newScores = new MultiElo(eloConfig).getNewRatings(
       teams.map((team) => Number.parseFloat(team.rating)),
       teams.map((team) => Number.parseInt(team.order, 10))
     );
@@ -67,6 +66,8 @@ export const App: FC = () => {
       )
     );
   };
+
+  useEffectOnce(calculate);
 
   return (
     <div className="bg-bg min-h-screen flex flex-col items-center">
@@ -86,6 +87,7 @@ export const App: FC = () => {
         setTeams={setTeams}
         lastRowNameRef={lastRowNameRef}
       />
+      <ExtendedSettings config={eloConfig} setConfig={setEloConfig} />
       <div className="flex my-6">
         <Button className="mr-8" onClick={addTeam}>
           <AddCircle24Regular className="h-8 w-8" />

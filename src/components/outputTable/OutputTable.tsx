@@ -1,6 +1,6 @@
+import classNames from "classnames";
 import { FC } from "react";
 import { OutputTeam } from "../../App";
-import { TableDataCell } from "../tableDataCell/TableDataCell";
 
 const precision = 2;
 
@@ -12,9 +12,9 @@ export const OutputTable: FC<OutputTableProps> = ({ teams }) => (
   <table>
     <thead>
       <tr>
-        <TableDataCell>Team Name</TableDataCell>
-        <TableDataCell>New Score</TableDataCell>
-        <TableDataCell>Difference</TableDataCell>
+        <OutputTableHeader>Team Name</OutputTableHeader>
+        <OutputTableHeader className="text-right">New Score</OutputTableHeader>
+        <OutputTableHeader className="text-right">Difference</OutputTableHeader>
       </tr>
     </thead>
     <tbody>
@@ -22,29 +22,34 @@ export const OutputTable: FC<OutputTableProps> = ({ teams }) => (
         .slice()
         .sort(compareTeamsByNewScore)
         .map((team, index) => (
-          <tr key={index}>
-            <td>{team.name}</td>
-            <td title={team.newRating.toString()}>
-              {team.newRating.toFixed(precision)}
-            </td>
-            <td title={(team.newRating - team.rating).toString()}>
-              {(team.newRating - team.rating).toFixed(precision)}
-            </td>
+          <tr key={index} className="odd:bg-e-1">
+            <td className="p-2">{team.name}</td>
+            <OutputTableValueField value={team.newRating} />
+            <OutputTableValueField value={team.newRating - team.rating} />
           </tr>
         ))}
     </tbody>
   </table>
 );
 
-const compareTeamsByNewScore = (a: OutputTeam, b: OutputTeam): number => {
-  const aNewRating = a.newRating || 0;
-  const bNewRating = b.newRating || 0;
+const compareTeamsByNewScore = (a: OutputTeam, b: OutputTeam): number =>
+  b.newRating - a.newRating;
 
-  if (aNewRating === b.newRating) {
-    return 0;
-  }
-  if (aNewRating < bNewRating) {
-    return 1;
-  }
-  return -1;
-};
+const OutputTableHeader: FC<{ className?: string }> = ({
+  children,
+  className,
+}) => (
+  <td className={classNames("text-xl px-2 py-1", className)}>{children}</td>
+);
+
+const OutputTableValueField: FC<{ value: number; className?: string }> = ({
+  value,
+  className,
+}) => (
+  <td
+    title={value.toString()}
+    className={classNames("text-right px-2 py-1", className)}
+  >
+    {value.toFixed(precision)}
+  </td>
+);

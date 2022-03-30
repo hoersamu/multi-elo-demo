@@ -1,16 +1,20 @@
 import { Delete24Regular } from "@fluentui/react-icons";
 import classNames from "classnames";
-import { ChangeEvent, FC, InputHTMLAttributes } from "react";
+import { ChangeEvent, FC, InputHTMLAttributes, RefObject } from "react";
 import { Team } from "../../App";
 import { Button } from "../button/Button";
-import { TableDataCell } from "../tableDataCell/TableDataCell";
 
 type InputTableProps = {
   teams: Team[];
   setTeams: (teams: Team[]) => void;
+  lastRowNameRef: RefObject<HTMLInputElement>;
 };
 
-export const InputTable: FC<InputTableProps> = ({ teams, setTeams }) => {
+export const InputTable: FC<InputTableProps> = ({
+  teams,
+  setTeams,
+  lastRowNameRef,
+}) => {
   const onUpdate = (
     event: ChangeEvent<HTMLInputElement>,
     key: keyof Team,
@@ -47,6 +51,9 @@ export const InputTable: FC<InputTableProps> = ({ teams, setTeams }) => {
                   onBlur={(event): void => {
                     onUpdate(event, "name", index);
                   }}
+                  lastRowNameRef={
+                    index + 1 === teams.length ? lastRowNameRef : undefined
+                  }
                   defaultValue={team.name}
                 />
               </TableDataCell>
@@ -86,12 +93,18 @@ export const InputTable: FC<InputTableProps> = ({ teams, setTeams }) => {
   );
 };
 
-const Input: FC<InputHTMLAttributes<HTMLInputElement>> = ({
-  className,
-  ...props
-}) => (
+const Input: FC<
+  InputHTMLAttributes<HTMLInputElement> & {
+    lastRowNameRef?: RefObject<HTMLInputElement>;
+  }
+> = ({ className, lastRowNameRef, ...props }) => (
   <input
+    ref={lastRowNameRef}
     className={classNames("bg-e-2 h-8 rounded-lg px-2", className)}
     {...props}
   />
+);
+
+const TableDataCell: FC = ({ children }) => (
+  <td className="px-2">{children}</td>
 );

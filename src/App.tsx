@@ -1,6 +1,6 @@
 import { AddCircle24Regular, Calculator24Regular } from "@fluentui/react-icons";
 import { MultiElo } from "multi-elo";
-import React, { FC, useState } from "react";
+import React, { FC, useRef, useState } from "react";
 import { Button } from "./components/button/Button";
 import { InputTable } from "./components/inputTable/InputTable";
 import { OutputTable } from "./components/outputTable/OutputTable";
@@ -38,6 +38,8 @@ export const App: FC = () => {
     },
   ]);
 
+  const lastRowNameRef = useRef<HTMLInputElement>(null);
+
   const addTeam = (): void => {
     const maxOrder = Math.max(
       ...teams.map((team) => Number.parseInt(team.order, 10))
@@ -46,6 +48,7 @@ export const App: FC = () => {
       ...teams,
       { name: "", rating: "", order: (maxOrder + 1).toString() },
     ]);
+    setTimeout(() => lastRowNameRef.current?.focus(), 0);
   };
 
   const calculate = (): void => {
@@ -78,7 +81,11 @@ export const App: FC = () => {
         </a>
       </p>
 
-      <InputTable teams={teams} setTeams={setTeams} />
+      <InputTable
+        teams={teams}
+        setTeams={setTeams}
+        lastRowNameRef={lastRowNameRef}
+      />
       <div className="flex my-6">
         <Button className="mr-8" onClick={addTeam}>
           <AddCircle24Regular className="h-8 w-8" />

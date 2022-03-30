@@ -45,7 +45,7 @@ export const App: FC = () => {
     );
     setTeams([
       ...teams,
-      { name: "", rating: "", order: (maxOrder + 1).toString() },
+      { name: "", rating: "1000", order: (maxOrder + 1).toString() },
     ]);
     setTimeout(() => lastRowNameRef.current?.focus(), 0);
   };

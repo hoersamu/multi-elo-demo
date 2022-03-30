@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { FC } from "react";
+import { useAlert } from "react-alert";
 import { OutputTeam } from "../../App";
 
 const precision = 2;
@@ -45,11 +46,25 @@ const OutputTableHeader: FC<{ className?: string }> = ({
 const OutputTableValueField: FC<{ value: number; className?: string }> = ({
   value,
   className,
-}) => (
-  <td
-    title={value.toString()}
-    className={classNames("text-right px-2 py-1", className)}
-  >
-    {value.toFixed(precision)}
-  </td>
-);
+}) => {
+  const alert = useAlert();
+
+  return (
+    <td
+      title={value.toString()}
+      className={classNames("text-right px-2 py-1", className)}
+    >
+      <button
+        className="w-full h-full"
+        onClick={(): void => {
+          navigator.clipboard
+            .writeText(value.toString())
+            .then(() => alert.show("Copied value"))
+            .catch(null);
+        }}
+      >
+        {value.toFixed(precision)}
+      </button>
+    </td>
+  );
+};

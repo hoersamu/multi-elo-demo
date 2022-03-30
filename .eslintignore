@@ -6,3 +6,4 @@ www/
 .eslintrc.js
 tailwind.config.js
 src/reportWebVitals.ts
+public/worker.js

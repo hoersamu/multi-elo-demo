@@ -23,6 +23,7 @@ export type OutputTeam = {
   name: string;
   rating: number;
   newRating: number;
+  winProp: number;
 };
 
 export const App: FC = () => {
@@ -51,10 +52,13 @@ export const App: FC = () => {
   };
 
   const calculate = (): void => {
-    const newScores = new MultiElo(eloConfig).getNewRatings(
-      teams.map((team) => Number.parseFloat(team.rating)),
+    const ratings = teams.map((team) => Number.parseFloat(team.rating));
+    const elo = new MultiElo(eloConfig);
+    const newScores = elo.getNewRatings(
+      ratings,
       teams.map((team) => Number.parseInt(team.order, 10))
     );
+    const winProps = elo.getExpectedScores(ratings);
 
     setOutputTeams(
       teams.map(
@@ -62,6 +66,7 @@ export const App: FC = () => {
           name: team.name,
           rating: Number.parseFloat(team.rating),
           newRating: newScores[index],
+          winProp: winProps[index],
         })
       )
     );
@@ -72,8 +77,8 @@ export const App: FC = () => {
   return (
     <div className="bg-bg min-h-screen flex flex-col items-center">
       <h1 className="text-4xl font-semibold mt-20 mb-4">Multi-Elo Demo</h1>
-      <p className="mb-8 text-center">
-        This website showcases the functionality offered by my{" "}
+      <p className="text-center">
+        {"This website showcases the functionality offered by my "}
         <a
           href="https://www.npmjs.com/package/multi-elo"
           className="text-accent"
@@ -81,7 +86,15 @@ export const App: FC = () => {
           multi-elo npm package.
         </a>
       </p>
-
+      <p className="mb-8 text-center">
+        {"You can learn more about the Elo rating system "}
+        <a
+          href="https://en.wikipedia.org/wiki/Elo_rating_system"
+          className="text-accent"
+        >
+          here.
+        </a>
+      </p>
       <InputTable
         teams={teams}
         setTeams={setTeams}

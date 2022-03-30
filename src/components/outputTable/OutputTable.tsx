@@ -3,7 +3,8 @@ import { FC } from "react";
 import { useAlert } from "react-alert";
 import { OutputTeam } from "../../App";
 
-const precision = 2;
+const PRECISION = 2;
+const HUNDRED = 100;
 
 type OutputTableProps = {
   teams: OutputTeam[];
@@ -16,6 +17,9 @@ export const OutputTable: FC<OutputTableProps> = ({ teams }) => (
         <OutputTableHeader>Team Name</OutputTableHeader>
         <OutputTableHeader className="text-right">New Score</OutputTableHeader>
         <OutputTableHeader className="text-right">Difference</OutputTableHeader>
+        <OutputTableHeader className="text-right">
+          Win probability
+        </OutputTableHeader>
       </tr>
     </thead>
     <tbody>
@@ -27,6 +31,7 @@ export const OutputTable: FC<OutputTableProps> = ({ teams }) => (
             <td className="p-2">{team.name}</td>
             <OutputTableValueField value={team.newRating} />
             <OutputTableValueField value={team.newRating - team.rating} />
+            <OutputTableValueField value={team.winProp * HUNDRED} unit={"%"} />
           </tr>
         ))}
     </tbody>
@@ -43,19 +48,17 @@ const OutputTableHeader: FC<{ className?: string }> = ({
   <td className={classNames("text-xl px-2 py-1", className)}>{children}</td>
 );
 
-const OutputTableValueField: FC<{ value: number; className?: string }> = ({
-  value,
-  className,
-}) => {
+const OutputTableValueField: FC<{
+  value: number;
+  className?: string;
+  unit?: string;
+}> = ({ value, className, unit }) => {
   const alert = useAlert();
 
   return (
-    <td
-      title={value.toString()}
-      className={classNames("text-right px-2 py-1", className)}
-    >
+    <td title={value.toString()} className={classNames("px-2 py-1", className)}>
       <button
-        className="w-full h-full"
+        className="w-full h-full text-right"
         onClick={(): void => {
           navigator.clipboard
             .writeText(value.toString())
@@ -63,7 +66,8 @@ const OutputTableValueField: FC<{ value: number; className?: string }> = ({
             .catch(null);
         }}
       >
-        {value.toFixed(precision)}
+        {value.toFixed(PRECISION)}
+        {unit}
       </button>
     </td>
   );

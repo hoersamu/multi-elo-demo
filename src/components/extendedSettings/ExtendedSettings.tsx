@@ -40,7 +40,7 @@ export const ExtendedSettings: FC<ExtendedSettingsProps> = ({
             }
           />
           <span>
-            K controls how many Elo points are gained or lost in a single game
+            K controls how many Elo points are gained or lost in a single game.
           </span>
           <ValueName>D</ValueName>
           <InputWrapper
@@ -65,7 +65,7 @@ export const ExtendedSettings: FC<ExtendedSettingsProps> = ({
           />
           <span>
             S is the base of the exponential score function which controls how
-            points are awarded in multiplayer games
+            points are awarded in multiplayer games.
           </span>
         </div>
       )}

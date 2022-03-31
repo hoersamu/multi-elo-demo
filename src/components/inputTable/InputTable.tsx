@@ -3,17 +3,20 @@ import { ChangeEvent, FC, RefObject } from "react";
 import { Team } from "../../App";
 import { Button } from "../button/Button";
 import { Input } from "../input/Input";
+import { Control, Controller, FieldValues } from "react-hook-form";
 
 type InputTableProps = {
   teams: Team[];
   setTeams: (teams: Team[]) => void;
   lastRowNameRef: RefObject<HTMLInputElement>;
+  control: Control<FieldValues, unknown>;
 };
 
 export const InputTable: FC<InputTableProps> = ({
   teams,
   setTeams,
   lastRowNameRef,
+  control,
 }) => {
   const onUpdate = (
     event: ChangeEvent<HTMLInputElement>,
@@ -51,28 +54,46 @@ export const InputTable: FC<InputTableProps> = ({
                   onBlur={(event): void => {
                     onUpdate(event, "name", index);
                   }}
-                  inputRef={
-                    index + 1 === teams.length ? lastRowNameRef : undefined
-                  }
+                  ref={index + 1 === teams.length ? lastRowNameRef : undefined}
                   defaultValue={team.name}
                 />
               </TableDataCell>
               <TableDataCell>
-                <Input
-                  onBlur={(event): void => {
-                    onUpdate(event, "rating", index);
-                  }}
+                <Controller
+                  name={`${index}-rating`}
+                  control={control}
+                  rules={{ required: true, pattern: /^\d+(\.\d+)?$/ }}
                   defaultValue={team.rating}
-                  type="number"
+                  render={({ field, fieldState: { error } }): JSX.Element => (
+                    <Input
+                      {...field}
+                      onBlur={(event): void => {
+                        onUpdate(event, "rating", index);
+                        field.onBlur();
+                      }}
+                      type="number"
+                      className={error && "!border-danger"}
+                    />
+                  )}
                 />
               </TableDataCell>
               <TableDataCell>
-                <Input
-                  onBlur={(event): void => {
-                    onUpdate(event, "order", index);
-                  }}
+                <Controller
+                  name={`${index}-order`}
+                  control={control}
+                  rules={{ required: true, pattern: /^\d+$/ }}
                   defaultValue={team.order}
-                  type="number"
+                  render={({ field, fieldState: { error } }): JSX.Element => (
+                    <Input
+                      {...field}
+                      onBlur={(event): void => {
+                        onUpdate(event, "order", index);
+                        field.onBlur();
+                      }}
+                      type="number"
+                      className={error && "!border-danger"}
+                    />
+                  )}
                 />
               </TableDataCell>
               <TableDataCell>

@@ -7,6 +7,7 @@ import {
   MultiEloConfig,
 } from "multi-elo";
 import React, { FC, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useEffectOnce } from "usehooks-ts";
 import { Button } from "./components/button/Button";
 import { ExtendedSettings } from "./components/extendedSettings/ExtendedSettings";
@@ -41,6 +42,11 @@ export const App: FC = () => {
 
   const lastRowNameRef = useRef<HTMLInputElement>(null);
 
+  const {
+    control,
+    formState: { errors },
+  } = useForm({ mode: "onBlur" });
+
   const addTeam = (): void => {
     const maxOrder = Math.max(
       ...teams.map((team) => Number.parseInt(team.order, 10))
@@ -53,6 +59,10 @@ export const App: FC = () => {
   };
 
   const calculate = (): void => {
+    if (Object.keys(errors).length) {
+      return;
+    }
+
     const ratings = teams.map((team) => Number.parseFloat(team.rating));
     const elo = new MultiElo(eloConfig);
     const newScores = elo.getNewRatings(
@@ -82,6 +92,7 @@ export const App: FC = () => {
         teams={teams}
         setTeams={setTeams}
         lastRowNameRef={lastRowNameRef}
+        control={control}
       />
       <ExtendedSettings config={eloConfig} setConfig={setEloConfig} />
       <div className="flex my-6">

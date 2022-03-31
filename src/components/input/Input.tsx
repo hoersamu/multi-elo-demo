@@ -1,14 +1,16 @@
 import classNames from "classnames";
-import { FC, InputHTMLAttributes, RefObject } from "react";
+import { forwardRef, InputHTMLAttributes } from "react";
 
-export const Input: FC<
-  InputHTMLAttributes<HTMLInputElement> & {
-    inputRef?: RefObject<HTMLInputElement>;
-  }
-> = ({ className, inputRef, ...props }) => (
+export const Input = forwardRef<
+  HTMLInputElement,
+  InputHTMLAttributes<HTMLInputElement>
+>(({ className, ...props }, ref) => (
   <input
-    ref={inputRef}
-    className={classNames("bg-e-2 h-8 rounded-lg px-2", className)}
+    ref={ref}
+    className={classNames(
+      className,
+      "bg-e-2 h-8 rounded-lg px-2 border border-bg"
+    )}
     {...props}
   />
-);
+));

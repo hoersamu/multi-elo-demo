@@ -11,6 +11,7 @@ export const Input = forwardRef<
       className,
       "bg-e-2 h-8 rounded-lg px-2 border border-bg"
     )}
+    onTouchStart={(event): void => event.preventDefault()}
     {...props}
   />
 ));

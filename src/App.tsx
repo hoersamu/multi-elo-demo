@@ -55,7 +55,7 @@ export const App: FC = () => {
       ...teams,
       { name: "", rating: "1000", order: (maxOrder + 1).toString() },
     ]);
-    setTimeout(() => lastRowNameRef.current?.focus(), 0);
+    setTimeout(() => lastRowNameRef.current?.focus().setSelectionRange(0,999), 0);
   };
 
   const calculate = (): void => {

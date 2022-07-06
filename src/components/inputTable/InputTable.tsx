@@ -9,7 +9,7 @@ type InputTableProps = {
   teams: Team[];
   setTeams: (teams: Team[]) => void;
   lastRowNameRef: RefObject<HTMLInputElement>;
-  control: Control<FieldValues, unknown>;
+  control: Control<FieldValues, object>;
 };
 
 export const InputTable: FC<InputTableProps> = ({

@@ -36,7 +36,7 @@
     "react-hook-form": "7.34.0",
     "react-scripts": "5.0.1",
     "sass": "1.54.3",
-    "typescript": "4.7.4",
+    "typescript": "4.9.3",
     "usehooks-ts": "2.6.0"
   },
   "devDependencies": {

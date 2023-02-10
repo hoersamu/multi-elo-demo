@@ -27,7 +27,7 @@
     "lint:no-warnings": "eslint src --ext .tsx --max-warnings=0"
   },
   "dependencies": {
-    "@fluentui/react-icons": "2.0.178",
+    "@fluentui/react-icons": "2.0.194",
     "classnames": "2.3.1",
     "multi-elo": "2.2.0",
     "react": "17.0.2",
